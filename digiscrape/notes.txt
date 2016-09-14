@@ -1,0 +1,31 @@
+I# this line is a comment.
+
+from lsml import html
+import requests
+
+dpage = requests.get('http://www.digikey.com/stuff')
+
+dtree = html.fromstring(dpage.contetn)
+
+speed = dtree.xpath('//td[@class="CLS 143 ptable-param"]/text()')
+
+speed = [x.strip('\n') for x in speed]
+speed = [x.strip(' ') for  x in speed]
+speed = [x.strip('MHz') for x in speed]
+
+speed = [x.strip('\n').strip(' ').strip('MHz') for x in speed]
+
+part = dtree.xpath('//td[@class="tr-mfgPartNumber"]//span[@itemprop="name"]/text()')
+
+price = dtree.xpath('//td[@class="tr-unitPrice ptable-param"]/text()')
+
+grouping = list(zip(part,speed,price))
+
+def foo(x, y, z):
+  return 2*x + y + z
+
+foo = lambda x, y, z: 2*x + y + z
+
+group_sorted = sorted(grouping, key = lambda group:group[1]/group[2] )
+
+
