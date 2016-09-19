@@ -16,9 +16,9 @@ def get_best_price_per_speed(url, max_parts=5):
     """
     dpage = requests.get(url)
     dtree = html.fromstring(dpage.content)
-    speed = get_speed(dtree)
-    price = get_price(dtree)
-    part = get_part_number(dtree)
+    speed = list(get_speeds(dtree))
+    price = list(get_prices(dtree))
+    part = list(get_part_numbers(dtree))
     # Check for different length lists
     if len(speed) != len(price) != len(part):
         raise ValueError(
@@ -30,37 +30,53 @@ def get_best_price_per_speed(url, max_parts=5):
     return grouping_sorted[:max_parts]
 
 
-def get_speed(dtree):
-    """Return a list of all speeds from page from top to bottom.
+def get_items(dtree, xpath, chars_to_strip=None, parse_as=str):
+    """Return generator over the cleaned items provided by xpath
+
+    Args:
+        dtree: ??? what type is this ??? html tree
+        xpath: path to search for on html tree
+        chars_to_strip (str): remove these characters before parsing the str.
+            Defaults to stripping whitespace.
+        parse_as (str -> ?): optional function used to parse the item as a
+            different data type.  defaults to leaving the item as a string.
+    """
+    return (parse_as(x.strip(chars_to_strip)) for x in dtree.xpath(xpath))
+
+
+def get_speeds(dtree):
+    """Return a generator of all speeds from page from top to bottom.
 
     Args:
         dtree: ??? what is the type ???
     """
-    speed = dtree.xpath('//td[@class="CLS 143 ptable-param"]/text()')
-    speed = [x.strip('\n MHz') for x in speed]
-    return speed
+    return get_items(
+        dtree,
+        '//td[@class="CLS 143 ptable-param"]/text()',
+        chars_to_strip='\n MHz',
+        parse_as=float)
 
 
-def get_price(dtree):
-    """Return a list of all prices from page from top to bottom.
+def get_prices(dtree):
+    """Return a generator of all prices from page from top to bottom.
 
     Args:
         dtree: ??? what is the type ???
     """
-    price = dtree.xpath('//td[@class="tr-unitPrice ptable-param"]/text()')
-    price = [x.strip('\n ') for x in price]
-    return price
+    return get_items(
+        dtree,
+        '//td[@class="tr-unitPrice ptable-param"]/text()',
+        chars_to_strip=' \n',
+        parse_as=float)
 
 
-# This function returns a list of all the part number from page
-# from top to bottom
-def get_part_number(dtree):
-    """ Return a list of all part numbers from page from top to bottom.
+def get_part_numbers(dtree):
+    """ Return a generator of all part numbers from page from top to bottom.
 
     Args:
       dtree: ??? what is the type ???
 
     """
-    part_num = dtree.xpath(
+    return get_items(
+        dtree,
         '//td[@class="tr-mfgPartNumber"]//span[@itemprop="name"]/text()')
-    return part_num
