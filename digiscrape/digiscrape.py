@@ -37,7 +37,7 @@ def get_speed(dtree):
         dtree: ??? what is the type ???
     """
     speed = dtree.xpath('//td[@class="CLS 143 ptable-param"]/text()')
-    speed = [x.strip('\n \nMHz') for x in speed]
+    speed = [x.strip('\n MHz') for x in speed]
     return speed
 
 
@@ -48,7 +48,7 @@ def get_price(dtree):
         dtree: ??? what is the type ???
     """
     price = dtree.xpath('//td[@class="tr-unitPrice ptable-param"]/text()')
-    price = [x.strip('\n \n') for x in price]
+    price = [x.strip('\n ') for x in price]
     return price
 
 
