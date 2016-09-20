@@ -8,7 +8,7 @@ import requests
 
 
 def get_best_price_per_speed(url, max_parts=5):
-    """Return a list of tubles of the part numbers with the best price and speed.
+    """Return a list of tuples of the part numbers with the best price and speed.
 
     Args:
         url (str): digikehy url to scrape
