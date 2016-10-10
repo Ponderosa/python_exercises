@@ -1,0 +1,42 @@
+Goals
+
+Concurrency in Python using the multiprocessing module and meassage passing.
+cmd module
+
+- When started, it should prompt the user to select an avaiable midi device to listen for input.
+
+- The main process should then continue as a text-based user interface to control the program.
+	Use the Python cmd module for this: https://docs.python.org/3/library/cmd.html 
+	Provide exactly one command: quit, which should gracefully cause all processes to terminate.
+
+- A second process should listen to messages from the main process, and whatever service is providing midi events.
+	This process should be started from the main process using the Python multiprocessing module. 
+	Use the multiprocessing Queue to communicate between processes by passing messages.
+
+- The process which is listening for messages should correctly respond to the main thread telling it to quit. Otherwise, it should wait for a midi message to appear. When on does appear, it should print the note and velocity to the command line.
+
+Some tips:
+- Use either the rt-midi library for Python or mido. 
+	Usually these run their own thread and you define their behavior by passing them a callback to excute when they get a message.
+	The contents of that callback should be something like formatting the midi meassage into a data structure of your chossing then posting that data structure to the message queue being drained by the slave process.
+
+	Probably < 200 LOC (not coutnign comments/docstrings).
+
+
+======================================================================
+
+ipython notes
+
+Mido:
+	import mido
+
+	mido.set_backend('mido.backends.rtmidi')
+
+	mido.get_output_names()
+
+	msg - inport.receive()
+
+Multiprocessing
+	
+
+sys.exit for exiting within thread
