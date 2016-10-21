@@ -1,7 +1,7 @@
 """
 The colortoypiano uses multi-threading to interface with
 a chosen midi interface. This interface is used to print all
-incoming midi signals for that device.
+incoming midi messages for that device.
 """
 
 import colortoypianoshell
@@ -56,8 +56,8 @@ class ColorToyPiano(object):
 
     def midi_monitor_thread(self, inport):
         """A function meant to run as a child thread that polls
-        the midi input for the next available midi signal. When
-        a midi signal is available it prints it to the stdout.
+        the midi input for the next available midi message. When
+        a midi message is available it prints it to the stdout.
 
         Args:
             self (ColorToyPiano object): a reference to self.
