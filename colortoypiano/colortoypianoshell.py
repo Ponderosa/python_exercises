@@ -1,3 +1,9 @@
+"""
+The colortoypianoshell uses the python cmd shell and the
+colortyopiano to interface with the user and a chosen midi interface.
+This interface is used to print all incoming midi signals for that device.
+"""
+
 import cmd
 
 
@@ -16,10 +22,12 @@ class ColorToyPianoShell(cmd.Cmd):
         self.piano_instance.quit()
         return True
 
+    # ------- open new midi port -------
     def do_open(self, arg):
         'Open a midi in port.'
         self.piano_instance.open(arg)
 
+    # ------- show all in ports -------
     def do_show(self, arg):
         'Prints available in ports.'
         self.piano_instance.show_in_ports()
