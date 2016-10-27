@@ -33,11 +33,11 @@ class ColorToyPiano(object):
         """
         inport = mido.open_input(mido.get_input_names()[int(channel)])
         self.t = threading.Thread(
-            target=midi_monitor_thread, args=(inport, self.q))
+            target=midi_monitor, args=(inport, self.q))
         self.t.start()
 
 
-def midi_monitor_thread(inport, q):
+def midi_monitor(inport, q):
     """A function meant to run as a child thread that polls
     the midi input for the next available midi message. When
     a midi message is available it prints it to the stdout.
