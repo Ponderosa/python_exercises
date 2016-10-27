@@ -13,7 +13,7 @@ class ColorToyPianoShell(cmd.Cmd):
 
     # ------- init method -------
     def __init__(self, pi):
-        cmd.Cmd.__init__(self)
+        super().__init__()
         self.piano_instance = pi
 
     # ------- basic colortoypiano commands -------
