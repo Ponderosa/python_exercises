@@ -36,10 +36,6 @@ class ColorToyPiano(object):
             target=self.midi_monitor_thread, args=(inport,))
         self.t.start()
 
-    def show_in_ports(self):
-        """Print a list of all available midi input ports."""
-        print(list(enumerate(mido.get_input_names())))
-
     def midi_monitor_thread(self, inport):
         """A function meant to run as a child thread that polls
         the midi input for the next available midi message. When
@@ -59,6 +55,11 @@ class ColorToyPiano(object):
             if msg is not None:
                 print(msg)
                 sys.stdout.flush()
+
+
+def show_in_ports():
+    """Print a list of all available midi input ports."""
+    print(list(enumerate(mido.get_input_names())))
 
 
 def main():

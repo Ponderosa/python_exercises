@@ -5,6 +5,7 @@ This interface is used to print all incoming midi signals for that device.
 """
 
 import cmd
+import colortoypiano
 
 
 class ColorToyPianoShell(cmd.Cmd):
@@ -30,4 +31,4 @@ class ColorToyPianoShell(cmd.Cmd):
     # ------- show all in ports -------
     def do_show(self, arg):
         'Prints available in ports.'
-        self.piano_instance.show_in_ports()
+        colortoypiano.show_in_ports()
