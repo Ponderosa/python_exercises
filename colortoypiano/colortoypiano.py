@@ -14,31 +14,21 @@ import threading
 class ColorToyPiano(object):
 
     def __init__(self):
-        """Create local queue and thread
-
-        Args:
-            self (ColorToyPiano object): a reference to self.
-        """
+        """Create local queue and thread."""
         self.q = queue.Queue()
         self.t = None
 
     def quit(self):
-        """Quit child threads
-
-        Args:
-            self (ColorToyPiano object): a reference to self.
-        """
+        """Quit child threads"""
         if self.t is not None:
             # Pass 'quit' command to child thread.
             self.q.put('quit')
-            while self.t.is_alive():
-                pass
+            self.t.join()
 
     def open(self, channel):
-        """Open a mido input device on another thread
+        """Open a mido input device on another thread.
 
         Args:
-            self (ColorToyPiano object): a reference to self.
             channel (int): midi input channel
         """
         inport = mido.open_input(mido.get_input_names()[int(channel)])
@@ -47,11 +37,7 @@ class ColorToyPiano(object):
         self.t.start()
 
     def show_in_ports(self):
-        """Print a list of all available midi input ports.
-
-        Args:
-            self (ColorToyPiano object): a reference to self.
-        """
+        """Print a list of all available midi input ports."""
         print(list(enumerate(mido.get_input_names())))
 
     def midi_monitor_thread(self, inport):
@@ -60,8 +46,7 @@ class ColorToyPiano(object):
         a midi message is available it prints it to the stdout.
 
         Args:
-            self (ColorToyPiano object): a reference to self.
-            inport (mido inport object): a reference to the current midi in.
+            inport (mido inport): a reference to the current midi in.
         """
         while True:
             if not self.q.empty():
