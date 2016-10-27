@@ -61,9 +61,12 @@ class ColorToyPiano(object):
                 sys.stdout.flush()
 
 
-if __name__ == '__main__':
+def main():
     """Main function for colortoypiano"""
     mido.set_backend('mido.backends.rtmidi')
     ctp = ColorToyPiano()
     ctps = colortoypianoshell.ColorToyPianoShell(ctp)
     ctps.cmdloop()
+
+if __name__ == '__main__':
+    main()
