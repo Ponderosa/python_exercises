@@ -33,28 +33,29 @@ class ColorToyPiano(object):
         """
         inport = mido.open_input(mido.get_input_names()[int(channel)])
         self.t = threading.Thread(
-            target=self.midi_monitor_thread, args=(inport,))
+            target=midi_monitor_thread, args=(inport, self.q))
         self.t.start()
 
-    def midi_monitor_thread(self, inport):
-        """A function meant to run as a child thread that polls
-        the midi input for the next available midi message. When
-        a midi message is available it prints it to the stdout.
 
-        Args:
-            inport (mido inport): a reference to the current midi in.
-        """
-        while True:
-            if not self.q.empty():
-                if (self.q.get() == 'quit'):
-                    print(inport.name + ' quit')
-                    break
-            # Polls (doesn't block) so if we get a quit command the response
-            # will not need to wait for another midi message to be sent.
-            msg = inport.poll()
-            if msg is not None:
-                print(msg)
-                sys.stdout.flush()
+def midi_monitor_thread(inport, q):
+    """A function meant to run as a child thread that polls
+    the midi input for the next available midi message. When
+    a midi message is available it prints it to the stdout.
+
+    Args:
+        inport (mido inport): a reference to the current midi in.
+    """
+    while True:
+        if not q.empty():
+            if (q.get() == 'quit'):
+                print(inport.name + ' quit')
+                break
+        # Polls (doesn't block) so if we get a quit command the response
+        # will not need to wait for another midi message to be sent.
+        msg = inport.poll()
+        if msg is not None:
+            print(msg)
+            sys.stdout.flush()
 
 
 def show_in_ports():
