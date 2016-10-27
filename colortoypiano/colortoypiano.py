@@ -52,7 +52,7 @@ class ColorToyPiano(object):
             if not self.q.empty():
                 if (self.q.get() == 'quit'):
                     print(inport.name + ' quit')
-                    sys.exit()
+                    break
             # Polls (doesn't block) so if we get a quit command the response
             # will not need to wait for another midi message to be sent.
             msg = inport.poll()
