@@ -46,8 +46,12 @@ def midi_monitor(inport, q):
         inport (mido inport): a reference to the current midi in.
     """
     while True:
-        if not q.empty():
-            if (q.get() == 'quit'):
+        try:
+            msg = q.get_nowait()
+        except queue.Empty:
+            pass
+        else:
+            if msg == 'quit':
                 print(inport.name + ' quit')
                 break
         # Polls (doesn't block) so if we get a quit command the response
