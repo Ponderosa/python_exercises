@@ -4,11 +4,11 @@ colortyopiano to interface with the user and a chosen midi interface.
 This interface is used to print all incoming midi signals for that device.
 """
 
-import cmd
+from cmd import Cmd
 import colortoypiano
 
 
-class ColorToyPianoShell(cmd.Cmd):
+class ColorToyPianoShell(Cmd):
     intro = 'This is the color toy piano. Type help or ? to list commands.\n'
     prompt = '(color toy piano) '
 

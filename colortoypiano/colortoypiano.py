@@ -4,18 +4,18 @@ a chosen midi interface. This interface is used to print all
 incoming midi messages for that device.
 """
 
-import colortoypianoshell
+from colortoypianoshell import ColorToyPianoShell
 import mido
-import queue
+from queue import Queue, Empty
 import sys
-import threading
+from threading import Thread
 
 
 class ColorToyPiano(object):
 
     def __init__(self):
         """Create local queue and thread."""
-        self.q = queue.Queue()
+        self.q = Queue()
         self.t = None
 
     def quit(self):
@@ -32,7 +32,7 @@ class ColorToyPiano(object):
             channel (int): midi input channel
         """
         inport = mido.open_input(mido.get_input_names()[int(channel)])
-        self.t = threading.Thread(
+        self.t = Thread(
             target=midi_monitor, args=(inport, self.q))
         self.t.start()
 
@@ -48,7 +48,7 @@ def midi_monitor(inport, q):
     while True:
         try:
             msg = q.get_nowait()
-        except queue.Empty:
+        except Empty:
             pass
         else:
             if msg == 'quit':
@@ -71,7 +71,7 @@ def main():
     """Main function for colortoypiano"""
     mido.set_backend('mido.backends.rtmidi')
     ctp = ColorToyPiano()
-    ctps = colortoypianoshell.ColorToyPianoShell(ctp)
+    ctps = ColorToyPianoShell(ctp)
     ctps.cmdloop()
 
 if __name__ == '__main__':
